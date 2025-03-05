@@ -1,6 +1,7 @@
 package com.example.demo.homepage;
 
 import com.example.demo.entity.Post;
+import com.example.demo.entity.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
