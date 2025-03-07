@@ -20,7 +20,7 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
     @Autowired
-    private  PostMapper postMapper; // ✅ Inject PostMapper
+    private  PostMapper postMapper;
 
     public Page<PostDTO> getPaginatedPosts(Pageable pageable) {
 

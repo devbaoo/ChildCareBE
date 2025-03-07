@@ -19,11 +19,9 @@ public class PostController {
     @GetMapping
     public Page<PostDTO> getPosts(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size) {
-        System.out.println("➡️ API /posts được gọi với page=" + page + " size=" + size);
 
         Page<PostDTO> posts = postService.getPaginatedPosts(PageRequest.of(page, size));
 
-        System.out.println("➡️ API /posts trả về " + posts.getTotalElements() + " bài viết.");
         return posts;
     }
 
