@@ -25,18 +25,18 @@ public class ServiceService {
     @Autowired
     private ServiceMapper serviceMapper;
 
-    // 1️⃣ Lấy danh sách dịch vụ với phân trang
+    //  Lấy danh sách dịch vụ với phân trang
     public Page<ServiceDTO> getAllServices(int page, int size) {
         Page<Service> services = serviceRepository.findAll(PageRequest.of(page, size));
         return services.map(serviceMapper::toDTO);
     }
 
-    // 2️⃣ Lấy chi tiết một dịch vụ
+    //  Lấy chi tiết một dịch vụ
     public Optional<ServiceDTO> getServiceById(String id) {
         return serviceRepository.findById(id).map(serviceMapper::toDTO);
     }
 
-    // 3️⃣ Thêm dịch vụ mới
+    //  Thêm dịch vụ mới
     public ServiceDTO createService(CreateServiceDTO dto) {
         Optional<Category> categoryOpt = categoryRepository.findById(dto.getCategoryId());
         if (categoryOpt.isEmpty()) {
@@ -55,7 +55,7 @@ public class ServiceService {
         return serviceMapper.toDTO(service);
     }
 
-    // 4️⃣ Cập nhật dịch vụ
+    //  Cập nhật dịch vụ
     public ServiceDTO updateService(String id, CreateServiceDTO dto) {
         Optional<Service> serviceOpt = serviceRepository.findById(id);
         if (serviceOpt.isEmpty()) {
@@ -72,7 +72,7 @@ public class ServiceService {
         return serviceMapper.toDTO(service);
     }
 
-    // 5️⃣ Ẩn dịch vụ
+    //  Ẩn dịch vụ
     public void hideService(String id) {
         Optional<Service> serviceOpt = serviceRepository.findById(id);
         if (serviceOpt.isPresent()) {
@@ -84,7 +84,7 @@ public class ServiceService {
         }
     }
 
-    // 6️⃣ Hiển thị dịch vụ
+    //  Hiển thị dịch vụ
     public void showService(String id, int quantity) {
         Optional<Service> serviceOpt = serviceRepository.findById(id);
         if (serviceOpt.isPresent()) {
