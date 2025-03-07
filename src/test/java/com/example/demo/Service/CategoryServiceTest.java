@@ -50,7 +50,6 @@ class CategoryServiceTest {
 
     @Test
     void testGetAllCategories_EmptyList() {
-        // Given: Repository trả về danh sách rỗng
         when(categoryRepository.findAll()).thenReturn(Arrays.asList());
 
         // When: Gọi hàm cần test
