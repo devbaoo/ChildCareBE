@@ -25,7 +25,17 @@ public class PostController {
         return posts;
     }
 
+    @GetMapping("/hot")
+    public ResponseEntity<List<PostDTO>> getHotPosts() {
+        List<PostDTO> hotPosts = postService.getHotPosts();
+        return ResponseEntity.ok(hotPosts);
+    }
 
+    @GetMapping("/latest")
+    public ResponseEntity<List<PostDTO>> getLatestPosts() {
+        List<PostDTO> latestPosts = postService.getLatestPosts();
+        return ResponseEntity.ok(latestPosts);
+    }
 
     @GetMapping("/search")
     public Page<PostDTO> searchPosts(@RequestParam String title,

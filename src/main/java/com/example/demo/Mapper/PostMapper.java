@@ -16,12 +16,15 @@ public class PostMapper {
         dto.setDescription(post.getDescription());
         dto.setUpdatedAt(post.getUpdatedAt());
         dto.setThumbnail(post.getThumbnail());
+        dto.setUpdatedAt(post.getUpdatedAt());
 
         // Set authorName instead of authorUsername
-        if (post.getAuthor() != null) {
+        if (post.getAuthor() != null && post.getCategory() != null) {
             dto.setAuthorName(post.getAuthor().getUsername());
+            dto.setCategoryTitle(post.getCategory().getTitle());
         } else {
             dto.setAuthorName("Unknown"); // Default value
+            dto.setCategoryTitle("Uncategorized");
         }
 
         return dto;

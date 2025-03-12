@@ -5,8 +5,10 @@ import com.example.demo.DTO.ServiceDTO;
 import com.example.demo.Service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,6 +42,12 @@ public class ServiceController {
         return serviceService.updateService(id, dto);
     }
 
+    @GetMapping("/featured")
+    public ResponseEntity<List<ServiceDTO>> getFeaturedServices() {
+        List<ServiceDTO> featuredServices = serviceService.getFeaturedServices();
+        return ResponseEntity.ok(featuredServices);
+    }
+
     // API ẩn dịch vụ
     @PatchMapping("/{id}/hide")
     public void hideService(@PathVariable String id) {
@@ -50,5 +58,11 @@ public class ServiceController {
     @PatchMapping("/{id}/show")
     public void showService(@PathVariable String id, @RequestParam int quantity) {
         serviceService.showService(id, quantity);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ServiceDTO>> searchServices(@RequestParam String name) {
+        List<ServiceDTO> services = serviceService.searchServices(name);
+        return ResponseEntity.ok(services);
     }
 }

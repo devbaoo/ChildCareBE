@@ -2,9 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -12,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "Service")
-public class Service {
+public class ServiceEntity {
     @Id
     @Column(name = "ID", length = 255)
     private String id;
@@ -26,8 +24,12 @@ public class Service {
     @Column(name = "ServiceQuantity")
     private Integer serviceQuantity;
 
-    @Column(name = "ServicePrice")
+    @Column(name = "ServicePrice", updatable = true, insertable = true)
     private BigDecimal servicePrice;
+
+    @ManyToOne
+    @JoinColumn(name = "StaffID", referencedColumnName = "ID", foreignKey = @ForeignKey(name = "Service_ibfk_1"))
+    private Staff staff;
 
     @ManyToOne
     @JoinColumn(name = "CategoryID")
