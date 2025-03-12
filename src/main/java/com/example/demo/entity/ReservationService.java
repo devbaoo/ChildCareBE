@@ -26,7 +26,7 @@ public class ReservationService {
     @ManyToOne
     @MapsId("serviceId")
     @JoinColumn(name = "ServiceID")
-    private Service service;
+    private ServiceEntity service;
 
     @Column(name = "Quantity")
     private Integer quantity;

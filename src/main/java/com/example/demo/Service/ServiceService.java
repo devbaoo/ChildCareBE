@@ -3,18 +3,22 @@ package com.example.demo.Service;
 import com.example.demo.DTO.CreateServiceDTO;
 import com.example.demo.DTO.ServiceDTO;
 import com.example.demo.entity.Category;
-import com.example.demo.entity.Service;
+import com.example.demo.entity.ServiceEntity;
 import com.example.demo.Mapper.ServiceMapper;
 import com.example.demo.Repository.CategoryRepository;
 import com.example.demo.Repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-@org.springframework.stereotype.Service
+@Service
 public class ServiceService {
     @Autowired
     private ServiceRepository serviceRepository;
@@ -27,7 +31,7 @@ public class ServiceService {
 
     //  Lấy danh sách dịch vụ với phân trang
     public Page<ServiceDTO> getAllServices(int page, int size) {
-        Page<Service> services = serviceRepository.findAll(PageRequest.of(page, size));
+        Page<ServiceEntity> services = serviceRepository.findAll(PageRequest.of(page, size));
         return services.map(serviceMapper::toDTO);
     }
 
@@ -43,7 +47,7 @@ public class ServiceService {
             throw new RuntimeException("Category not found");
         }
 
-        Service service = new Service();
+        ServiceEntity service = new ServiceEntity();
         service.setId(UUID.randomUUID().toString());
         service.setServiceName(dto.getServiceName());
         service.setServiceDetail(dto.getServiceDetail());
@@ -57,12 +61,12 @@ public class ServiceService {
 
     //  Cập nhật dịch vụ
     public ServiceDTO updateService(String id, CreateServiceDTO dto) {
-        Optional<Service> serviceOpt = serviceRepository.findById(id);
+        Optional<ServiceEntity> serviceOpt = serviceRepository.findById(id);
         if (serviceOpt.isEmpty()) {
             throw new RuntimeException("Service not found");
         }
 
-        Service service = serviceOpt.get();
+        ServiceEntity service = serviceOpt.get();
         service.setServiceName(dto.getServiceName());
         service.setServiceDetail(dto.getServiceDetail());
         service.setServiceQuantity(dto.getServiceQuantity());
@@ -72,11 +76,18 @@ public class ServiceService {
         return serviceMapper.toDTO(service);
     }
 
+    public List<ServiceDTO> getFeaturedServices() {
+        return serviceRepository.findByServiceQuantityGreaterThanAndServicePriceGreaterThanOrderByServicePriceDesc(0, BigDecimal.ZERO)
+                .stream()
+                .map(serviceMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     //  Ẩn dịch vụ
     public void hideService(String id) {
-        Optional<Service> serviceOpt = serviceRepository.findById(id);
+        Optional<ServiceEntity> serviceOpt = serviceRepository.findById(id);
         if (serviceOpt.isPresent()) {
-            Service service = serviceOpt.get();
+            ServiceEntity service = serviceOpt.get();
             service.setServiceQuantity(0); // Ẩn bằng cách set số lượng về 0
             serviceRepository.save(service);
         } else {
@@ -86,13 +97,28 @@ public class ServiceService {
 
     //  Hiển thị dịch vụ
     public void showService(String id, int quantity) {
-        Optional<Service> serviceOpt = serviceRepository.findById(id);
+        Optional<ServiceEntity> serviceOpt = serviceRepository.findById(id);
         if (serviceOpt.isPresent()) {
-            Service service = serviceOpt.get();
+            ServiceEntity service = serviceOpt.get();
             service.setServiceQuantity(quantity); // Đặt số lượng mới khi hiển thị lại
             serviceRepository.save(service);
         } else {
             throw new RuntimeException("Service not found");
         }
     }
+
+    public List<ServiceDTO> searchServices(String name) {
+        return serviceRepository.searchByServiceName(name)
+                .stream()
+                .map(service -> new ServiceDTO(
+                        service.getId(),
+                        service.getServiceName(),
+                        service.getServiceDetail(),
+                        service.getServiceQuantity(),
+                        service.getServicePrice(),
+                        service.getCategory().getId()
+                ))
+                .collect(Collectors.toList());
+    }
+
 }

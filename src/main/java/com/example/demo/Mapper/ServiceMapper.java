@@ -1,19 +1,19 @@
 package com.example.demo.Mapper;
 
 import com.example.demo.DTO.ServiceDTO;
-import com.example.demo.entity.Service;
+import com.example.demo.entity.ServiceEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ServiceMapper {
-    public ServiceDTO toDTO(Service service) {
+    public ServiceDTO toDTO(ServiceEntity service) {
         return new ServiceDTO(
                 service.getId(),
                 service.getServiceName(),
                 service.getServiceDetail(),
                 service.getServiceQuantity(),
                 service.getServicePrice(),
-                service.getCategory().getId()
+                service.getCategory() != null ? service.getCategory().getId() : null
         );
     }
 }

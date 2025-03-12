@@ -44,4 +44,18 @@ public class PostService {
         Optional<Post> post = postRepository.findById(id);
         return post.map(postMapper::convertToDTO).orElse(null);
     }
+
+    public List<PostDTO> getHotPosts() {
+        return postRepository.findByFlagTrueAndStatusOrderByUpdatedAtDesc("ACTIVE")
+                .stream()
+                .map(postMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PostDTO> getLatestPosts() {
+        return postRepository.findTop10ByOrderByUpdatedAtDesc()
+                .stream()
+                .map(postMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
 }

@@ -20,4 +20,7 @@ public interface PostRepository extends JpaRepository<Post, String> {
     List<Post> findByCategoryId(String categoryId);
 
     Optional<Post> findById(String id);
+    List<Post> findByFlagTrueAndStatusOrderByUpdatedAtDesc(String status);
+    List<Post> findTop10ByOrderByUpdatedAtDesc();
+
 }
