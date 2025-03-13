@@ -54,4 +54,10 @@ public class PostController {
         PostDTO post = postService.getPostById(id);
         return post != null ? ResponseEntity.ok(post) : ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/create")
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {
+        PostDTO createdPost = postService.createPost(postDTO);
+        return ResponseEntity.ok(createdPost);
+    }
 }
