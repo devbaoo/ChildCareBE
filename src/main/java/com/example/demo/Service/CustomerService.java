@@ -13,9 +13,10 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
     private final AccountRepository accountRepository;
 
-    public Page<Account> getAllAccounts(int page, int size, String keyword, String status) {
-        return accountRepository.findAllWithFilters(keyword, status, PageRequest.of(page, size));
+    public Page<Account> getAllAccounts(int page, int size, String keyword, String status , String role) {
+        return accountRepository.findAllWithFilters(keyword, status, role, PageRequest.of(page, size));
     }
+
 
     public Account getAccountById(int id) {
         return accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found"));
@@ -42,6 +43,7 @@ public class CustomerService {
         account.setAge(authDTO.getAge());
         account.setEmail(authDTO.getEmail());
         account.setPhoneNumber(authDTO.getPhoneNumber());
+        account.setRole(authDTO.getRole());
         return accountRepository.save(account);
     }
 
