@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 @Tag(name = "Category", description = "Quản lý danh mục sản phẩm")
 public class CategoryController {
     @Autowired
