@@ -29,4 +29,7 @@ public class Feedback {
 
     @Column(name = "Rating")
     private Integer rating;
+
+    @Column(name = "Status")
+    private String status;
 }
