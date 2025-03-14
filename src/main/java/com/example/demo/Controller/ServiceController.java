@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 import com.example.demo.DTO.CreateServiceDTO;
 import com.example.demo.DTO.ServiceDTO;
 import com.example.demo.Service.ServiceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/services")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ServiceController {
     @Autowired
     private ServiceService serviceService;

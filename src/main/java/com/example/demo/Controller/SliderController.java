@@ -2,6 +2,7 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTO.SliderDTO;
 import com.example.demo.Service.SliderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sliders")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class SliderController {
     @Autowired
     private SliderService sliderService;
