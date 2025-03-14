@@ -6,6 +6,7 @@ import com.example.demo.entity.Account;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,9 +44,15 @@ public class CustomerController {
 
     // 3.4. Chỉnh sửa thông tin khách hàng
     @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable int id, @RequestBody AuthDTO authDTO) {
-        return ResponseEntity.ok(customerService.updateAccount(id, authDTO));
+    public ResponseEntity<?> updateAccount(@PathVariable int id, @RequestBody AuthDTO authDTO) {
+        try {
+            Account updatedAccount = customerService.updateAccount(id, authDTO);
+            return ResponseEntity.ok(updatedAccount);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Lỗi cập nhật tài khoản: " + e.getMessage());
+        }
     }
+
 
     // 3.5. Xóa khách hàng (soft delete)
     @DeleteMapping("/{id}")

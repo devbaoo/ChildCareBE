@@ -1,14 +1,17 @@
 package com.example.demo.Service;
 
 import com.example.demo.DTO.*;
+import com.example.demo.Repository.CustomerRepository;
 import com.example.demo.entity.Account;
 import com.example.demo.Repository.AccountRepository;
 import com.example.demo.Authentication.config.JwtTokenProvider;
+import com.example.demo.entity.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final EmailService emailService;
+    private final CustomerRepository customerRepository;
 
     // Đăng ký tài khoản mới
     public String register(RegisterDTO registerDTO) {
@@ -24,6 +28,7 @@ public class AuthService {
             return "Email đã tồn tại!";
         }
 
+        // 1️⃣ Tạo tài khoản trong bảng Account
         Account account = new Account();
         account.setUsername(registerDTO.getUsername());
         account.setUserpass(passwordEncoder.encode(registerDTO.getUserpass()));
@@ -33,13 +38,23 @@ public class AuthService {
         account.setEmail(registerDTO.getEmail());
         account.setPhoneNumber(registerDTO.getPhoneNumber());
         account.setAddress(registerDTO.getAddress());
-        account.setRole("USER");
+        account.setRole("USER");  // Mặc định role là USER
         account.setStatus("INACTIVE");
         account.setEmailVerified(false);
 
-        accountRepository.save(account);
+        // ✅ Lưu tài khoản vào database
+        Account savedAccount = accountRepository.save(account);
 
-        // ✅ Gửi email xác thực
+        // 2️⃣ Nếu role là "USER", tạo bản ghi trong bảng Customer
+        if ("USER".equals(savedAccount.getRole())) {
+            Customer customer = new Customer();
+            customer.setId(UUID.randomUUID().toString()); // Sinh ID ngẫu nhiên
+            customer.setAccount(savedAccount);
+
+            customerRepository.save(customer); // ✅ Lưu Customer vào database
+        }
+
+        // 3️⃣ Gửi email xác thực
         String subject = "Xác thực tài khoản ChildCare";
         String content = "Chào " + account.getFirstname() + ",<br><br>"
                 + "Cảm ơn bạn đã đăng ký tài khoản. Vui lòng nhấn vào link dưới đây để xác thực tài khoản:<br>"
@@ -54,6 +69,7 @@ public class AuthService {
 
         return "Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.";
     }
+
 
     // Đăng nhập
     public AuthResponseDTO login(LoginDTO loginDTO) {

@@ -20,4 +20,5 @@ public class AuthDTO {
     String phoneNumber;
     String status;
     String resetToken;
+    String specialization;
 }
