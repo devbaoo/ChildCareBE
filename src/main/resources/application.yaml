@@ -12,9 +12,9 @@ spring:
       mail.smtp.starttls.enable: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/ChildCare
-    username: root
-    password:
+    url: jdbc:mysql://167.99.78.5:3306/childcare
+    username: devbaoo
+    password: 1234
   jpa:
     hibernate:
       ddl-auto: update

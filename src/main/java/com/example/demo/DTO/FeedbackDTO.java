@@ -14,4 +14,5 @@ public class FeedbackDTO {
     private String serviceId;
     private String feedbackDetail;
     private Integer rating;
+    private String status;
 }
