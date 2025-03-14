@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 import com.example.demo.DTO.AuthDTO;
 import com.example.demo.Service.CustomerService;
 import com.example.demo.entity.Account;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +16,17 @@ public class CustomerController {
     private final CustomerService customerService;
 
     // 3.1. Lấy danh sách khách hàng (phân trang + filter + search)
+    @Operation(summary = "Lấy danh sách tài khoản", description = "API hỗ trợ tìm kiếm theo keyword, status, gender, role")
     @GetMapping
     public ResponseEntity<Page<Account>> getAllAccounts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) String status) {
-        return ResponseEntity.ok(customerService.getAllAccounts(page, size, keyword, status));
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String role) {
+        return ResponseEntity.ok(customerService.getAllAccounts(page, size, keyword, status, role));
     }
+
 
     // 3.2. Xem chi tiết thông tin khách hàng
     @GetMapping("/{id}")
