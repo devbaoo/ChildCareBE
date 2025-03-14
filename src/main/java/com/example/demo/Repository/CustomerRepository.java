@@ -12,5 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, String> {
+    void deleteByAccountId(Integer accountId);
 
 }
