@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  security:
+    filter:
+      dispatch-request-matched: true
   mail:
     host: smtp.gmail.com
     port: 587
@@ -15,6 +18,12 @@ spring:
     url: jdbc:mysql://167.99.78.5:3306/childcare
     username: devbaoo
     password: 1234
+  springdoc:
+    api-docs:
+      enabled: true
+    swagger-ui:
+      path: /swagger-ui.html
+      enabled: true
   jpa:
     hibernate:
       ddl-auto: update
